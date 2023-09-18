@@ -12,7 +12,12 @@ function getSelectedChoiceFromUser(questionText) {
   while (true) {
     const rawChoice = prompt(questionText);
     const standardised = rawChoice?.toUpperCase();
-    if ("A" === standardised || "B" === standardised || "C" === standardised || "D" === standardised) {
+    if (
+      "A" === standardised ||
+      "B" === standardised ||
+      "C" === standardised ||
+      "D" === standardised
+    ) {
       return standardised;
     } else if (undefined === standardised) {
       return null;
@@ -22,34 +27,36 @@ function getSelectedChoiceFromUser(questionText) {
 }
 
 function playGame() {
-  const userHasCancelled = confirm("The quiz is about to begin. Are you sure you want to play?");
+  const userHasCancelled = confirm(
+    "The quiz is about to begin. Are you sure you want to play?"
+  );
+  let score = 0;
   if (userHasCancelled) {
-  
+    for (let i = 0; i <= questions.length; i++) {
+      const question = questions[i];
+      const text = createTextToDisplayQuestion(question);
+      const userChoice = getSelectedChoiceFromUser(text);
 
-  let score = -Infinity;
-
-  for (let i = 1; i !== questions.legth; i++) {
-    const question = questions[i];
-    const text = createTextToDisplayQuestion(question);
-    const userChoice = getSelectedChoiceFromUser(text);
-  }
+      const userHasAnsweredIncorrectly = userChoice !== questions.correctChoice;
+      if (userHasAnsweredIncorrectly) {
+        return alert(
+          `Incorrect, you lose! The correct answer was ${questions.correctChoice}. Your score was ${score}.`
+        );
+      }
+      score++;
+      return alert(`Correct! Your score is now ${score}!`);
+    }
     const userHasCancelled = null === userChoice;
+
     if (!userHasCancelled) {
-      return alert("You've cancelled the quiz, no more questions will be shown.");
-    } 
-
-    const userHasAnsweredIncorrectly = userChoice !== question.correctChoice;
-    if (userHasAnsweredIncorrectly) {
-      return;
-      alert(`Incorrect, you lose! The correct answer was ${question.correctChoice}. Your score was ${score}.`);
-    
+      return alert(
+        "You've cancelled the quiz, no more questions will be shown."
+      );
+    }
   }
 
-    score++;
-    alert(`Correct! Your score is now ${score}!`);
-  }
-
-  alert, `You've reached the end of the quiz, your score was ${score}. Please play again!`;
+  alert,
+    `You've reached the end of the quiz, your score was ${score}. Please play again!`;
 }
 
 playGame();
