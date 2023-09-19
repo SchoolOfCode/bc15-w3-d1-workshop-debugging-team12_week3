@@ -27,36 +27,37 @@ function getSelectedChoiceFromUser(questionText) {
 }
 
 function playGame() {
-  const userHasCancelled = confirm(
+  let userHasCancelled = confirm(
     "The quiz is about to begin. Are you sure you want to play?"
   );
   let score = 0;
   if (userHasCancelled) {
-    for (let i = 0; i <= questions.length; i++) {
+    for (let i = 0; i < questions.length; i++) {
       const question = questions[i];
       const text = createTextToDisplayQuestion(question);
       const userChoice = getSelectedChoiceFromUser(text);
+      userHasCancelled = null === userChoice;
 
-      const userHasAnsweredIncorrectly = userChoice !== questions.correctChoice;
+      const userHasAnsweredIncorrectly =
+        userChoice !== questions[i].correctChoice;
       if (userHasAnsweredIncorrectly) {
         return alert(
-          `Incorrect, you lose! The correct answer was ${questions.correctChoice}. Your score was ${score}.`
+          `Incorrect, you lose! The correct answer was ${questions[i].correctChoice}. Your score was ${score}.`
         );
       }
-      score++;
-      return alert(`Correct! Your score is now ${score}!`);
-    }
-    const userHasCancelled = null === userChoice;
-
-    if (!userHasCancelled) {
-      return alert(
-        "You've cancelled the quiz, no more questions will be shown."
-      );
+      if (!userHasAnsweredIncorrectly) {
+        score++;
+        alert(`Correct! Your score is now ${score}!`);
+      }
     }
   }
+  if (!userHasCancelled) {
+    return alert("You've cancelled the quiz, no more questions will be shown.");
+  }
 
-  alert,
-    `You've reached the end of the quiz, your score was ${score}. Please play again!`;
+  alert(
+    `You've reached the end of the quiz, your score was ${score}. Please play again!`
+  );
 }
 
 playGame();
